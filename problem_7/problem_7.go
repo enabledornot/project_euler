@@ -27,7 +27,6 @@ func findPrimes(x int) []int {
 }
 
 func checkPrimeWg(prevPrimes *[]int, possiblePrime int, output chan int) {
-	// defer wg.Done()
 	if checkPrime(prevPrimes,possiblePrime) {
 		output <- possiblePrime
 	} else {
@@ -39,11 +38,12 @@ func findPrimesThreaded(x int) []int {
 	prevPrimes := make([]int, 0, x)
 	currentNumber := 2
 	for x > len(prevPrimes) {
-		squareBound := currentNumber^2
+		squareBound := currentNumber * currentNumber
+		fmt.Println("Square Bound: ",squareBound)
 		newPrimes := make([]int, 0, x)
 		newprimechan := make(chan int)
 		count := 0
-		for x > len(prevPrimes) && squareBound > len(prevPrimes) {
+		for x > len(prevPrimes) && squareBound > currentNumber && count < 10000{
 			go checkPrimeWg(&prevPrimes, currentNumber, newprimechan)
 			currentNumber+=1
 			count+=1
@@ -61,7 +61,8 @@ func findPrimesThreaded(x int) []int {
 }
 
 func main() {
-	primes := findPrimes(10001)
+	prime_search := 10001
+	primes := findPrimesThreaded(prime_search)
 	fmt.Println("Length of Primes: ",len(primes))
-	fmt.Println("Primes: ",primes)
+	fmt.Println("The", prime_search, "th prime:",primes[prime_search-1])
 }
