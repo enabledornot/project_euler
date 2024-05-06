@@ -22,7 +22,7 @@ impl PrimeFacCalc {
     fn get_fac_count(&mut self, number: u32) -> u32 {
         let mut cnum = number;
         let mut fac_count = 1;
-        self.calculate_primes_to(number/2);
+        self.calculate_primes_to((number as f32).sqrt() as u32);
         // println!("prev_primes {:?}",&self.prev_primes);
         for prime in &self.prev_primes {
             let mut pfcount = 1;
@@ -31,9 +31,6 @@ impl PrimeFacCalc {
                 pfcount = pfcount + 1;
             }
             fac_count = fac_count * pfcount;
-        }
-        if cnum != 1 {
-            fac_count = fac_count + 1;
         }
         return fac_count;
     }
@@ -62,10 +59,10 @@ fn main() {
     while last_fac_count < 500 {
         csum = csum + cnum;
         cnum = cnum + 1;
-        if csum % 2 == 0 && csum % 3 == 0 && csum % 5 == 0  && csum % 7 == 0 && csum % 11 == 0 {
-            last_fac_count = pfc.get_fac_count(csum);
-            println!("{} - {}",csum,last_fac_count);
-        }
+        // if csum % 2 == 0 && csum % 3 == 0 && csum % 5 == 0  && csum % 7 == 0 && csum % 11 == 0 {
+        last_fac_count = pfc.get_fac_count(csum);
+        println!("{} - {}",csum,last_fac_count);
+        // }
         // csum = 6;
         // break;
     }
